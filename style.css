@@ -1,0 +1,106 @@
+/* Base */
+
+body {
+  margin: 0;
+  font-family: Georgia, "Libre Baskerville", serif;
+  background-color: #f7f5f2;
+  color: #222;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+/* Header */
+
+header {
+  border-bottom: 1px solid #ccc;
+  background-color: #f7f5f2;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 2.2rem;
+  font-weight: 700;
+}
+
+.subtitle {
+  margin: 0.2rem 0 1rem 0;
+  font-size: 1rem;
+  color: #555;
+}
+
+/* Navigation */
+
+nav {
+  margin-top: 0.5rem;
+}
+
+nav a {
+  margin-right: 1rem;
+  text-decoration: none;
+  font-family: "Source Sans 3", sans-serif;
+  font-size: 0.95rem;
+  color: #003366;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+/* Sections */
+
+main section {
+  margin: 2rem 0;
+}
+
+h2 {
+  font-size: 1.4rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Tables */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+th, td {
+  border: 1px solid #aaa;
+  padding: 0.6rem;
+  text-align: left;
+}
+
+th {
+  background-color: #eee;
+  font-weight: 600;
+  font-family: "Source Sans 3", sans-serif;
+}
+
+/* Lists */
+
+ul {
+  margin-left: 1.2rem;
+}
+
+/* Divider */
+
+hr {
+  border: none;
+  border-top: 1px solid #ccc;
+  margin: 2.5rem 0;
+}
+
+/* Footer */
+
+footer {
+  border-top: 1px solid #ccc;
+  margin-top: 3rem;
+  font-size: 0.85rem;
+  color: #555;
+}
