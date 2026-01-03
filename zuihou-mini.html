@@ -10,7 +10,61 @@
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* ---- Mini-specific layout ---- */
+
+    .deck-selector {
+      display: flex;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      flex-wrap: wrap;
+    }
+
+    .deck-selector button {
+      font-family: "Source Sans 3", sans-serif;
+      border: 1px solid #999;
+      background: #f7f5f2;
+      padding: 0.4rem 0.75rem;
+      cursor: pointer;
+    }
+
+    .deck-selector button.active {
+      background: #ddd;
+      font-weight: 600;
+    }
+
+    .deck-layout {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    .deck-box {
+      border: 1px solid #ccc;
+      padding: 0.5rem;
+      text-align: center;
+      font-size: 0.85rem;
+      color: #666;
+    }
+
+    .suits {
+      margin-top: 1rem;
+    }
+
+    .suits li {
+      margin-bottom: 0.5rem;
+    }
+
+    @media (max-width: 800px) {
+      .deck-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
 <header>
@@ -32,72 +86,48 @@
 
   <section>
     <h2>Zuihou Mini</h2>
-    <p><em>Beginner Mandarin card game</em></p>
+    <p><em>Beginner Mandarin vocabulary modules</em></p>
 
-    <p>
-      Zuihou Mini is a simplified, classroom-ready version of the Zuihou system
-      designed for beginning Mandarin learners. It emphasizes high-frequency
-      vocabulary, tone awareness, and repeated exposure through structured play.
-    </p>
+    <div class="deck-selector" id="deckSelector"></div>
+  </section>
+
+  <hr>
+
+  <section class="deck-layout">
+
+    <div>
+      <h3 id="deckName"></h3>
+
+      <p id="deckBlurb"></p>
+
+      <h4>Suits</h4>
+      <ul class="suits" id="suitList"></ul>
+
+      <h4>Vocabulary</h4>
+      <table>
+        <thead>
+          <tr>
+            <th>Hanzi</th>
+            <th>Pinyin</th>
+            <th>English</th>
+          </tr>
+        </thead>
+        <tbody id="vocabTable"></tbody>
+      </table>
+    </div>
+
+    <div class="deck-box">
+      <img id="deckImage" src="" alt="" style="max-width:100%;">
+      <p>Deck box</p>
+    </div>
+
   </section>
 
   <hr>
 
   <section>
-    <h2>Learning Outcomes</h2>
-    <ul>
-      <li>Recognition of common Mandarin vocabulary</li>
-      <li>Increased awareness of tones</li>
-      <li>Familiarity with simplified Chinese characters</li>
-    </ul>
-  </section>
-
-  <hr>
-
-  <section>
-    <h2>Available Editions</h2>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Edition</th>
-          <th>Vocabulary Focus</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Mini A</td>
-          <td>Classroom objects</td>
-        </tr>
-        <tr>
-          <td>Mini B</td>
-          <td>Food</td>
-        </tr>
-        <tr>
-          <td>Mini C</td>
-          <td>Family</td>
-        </tr>
-        <tr>
-          <td>Mini D</td>
-          <td>Daily activities</td>
-        </tr>
-        <tr>
-          <td>Additional editions</td>
-          <td>Available upon request</td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
-
-  <hr>
-
-  <section>
-    <h2>Classroom Use</h2>
-    <p>
-      Zuihou Mini is suitable for whole-class activities, small-group play, and
-      review sessions. Games typically require minimal setup and can be completed
-      within a standard class period.
-    </p>
+    <h3>Complete Card Set</h3>
+    <img src="images/zuihou-mini-cardsheet.png" alt="Zuihou Mini card overview" style="max-width:100%;">
   </section>
 
 </main>
@@ -107,6 +137,94 @@
     <p>© 2026 Zuihou</p>
   </div>
 </footer>
+
+<script>
+/* ---- DATA MODEL ---- */
+
+const decks = {
+  verbs: {
+    name: "Fundamental Verbs",
+    blurb: "This module introduces high-frequency Mandarin verbs that form the backbone of beginner sentence construction.",
+    image: "images/box-verbs.png",
+    suits: [
+      { name: "Actions", desc: "Core physical and mental actions learners encounter early." },
+      { name: "States", desc: "Verbs describing condition and existence." },
+      { name: "Movement", desc: "Common verbs related to direction and motion." },
+      { name: "Daily Use", desc: "Verbs essential for classroom and daily communication." }
+    ],
+    vocab: [
+      ["去", "qù", "to go"],
+      ["来", "lái", "to come"],
+      ["看", "kàn", "to look"],
+      ["吃", "chī", "to eat"],
+      ["说", "shuō", "to speak"]
+    ]
+  },
+
+  food: {
+    name: "Food & Drink",
+    blurb: "Food vocabulary provides immediate cultural relevance and supports early conversational practice.",
+    image: "images/box-food.png",
+    suits: [
+      { name: "Staples", desc: "Foundational food items." },
+      { name: "Drinks", desc: "Common beverages." },
+      { name: "Meals", desc: "Words related to eating occasions." },
+      { name: "Taste", desc: "Descriptive food adjectives." }
+    ],
+    vocab: [
+      ["饭", "fàn", "rice / meal"],
+      ["水", "shuǐ", "water"],
+      ["茶", "chá", "tea"],
+      ["吃", "chī", "to eat"]
+    ]
+  }
+};
+
+/* ---- RENDERING ---- */
+
+const selector = document.getElementById("deckSelector");
+const deckName = document.getElementById("deckName");
+const deckBlurb = document.getElementById("deckBlurb");
+const suitList = document.getElementById("suitList");
+const vocabTable = document.getElementById("vocabTable");
+const deckImage = document.getElementById("deckImage");
+
+function loadDeck(key) {
+  const deck = decks[key];
+
+  document.querySelectorAll(".deck-selector button").forEach(b => b.classList.remove("active"));
+  document.getElementById(`btn-${key}`).classList.add("active");
+
+  deckName.textContent = deck.name;
+  deckBlurb.textContent = deck.blurb;
+  deckImage.src = deck.image;
+
+  suitList.innerHTML = "";
+  deck.suits.forEach(s => {
+    const li = document.createElement("li");
+    li.innerHTML = `<strong>${s.name}:</strong> ${s.desc}`;
+    suitList.appendChild(li);
+  });
+
+  vocabTable.innerHTML = "";
+  deck.vocab.forEach(v => {
+    const row = document.createElement("tr");
+    row.innerHTML = `<td>${v[0]}</td><td>${v[1]}</td><td>${v[2]}</td>`;
+    vocabTable.appendChild(row);
+  });
+}
+
+/* ---- INIT ---- */
+
+Object.keys(decks).forEach((key, i) => {
+  const btn = document.createElement("button");
+  btn.textContent = decks[key].name;
+  btn.id = `btn-${key}`;
+  btn.onclick = () => loadDeck(key);
+  selector.appendChild(btn);
+  if (i === 0) loadDeck(key);
+});
+</script>
 
 </body>
 </html>
