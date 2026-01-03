@@ -43,10 +43,16 @@
 
     .deck-box {
       border: 1px solid #ccc;
-      padding: 0.5rem;
+      padding: 0.75rem;
       text-align: center;
       font-size: 0.85rem;
       color: #666;
+    }
+
+    .deck-box img {
+      display: block;
+      margin: 0 auto 0.5rem auto;
+      max-width: 100%;
     }
 
     .suits {
@@ -55,6 +61,11 @@
 
     .suits li {
       margin-bottom: 0.5rem;
+    }
+
+    .download-link {
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
     }
 
     @media (max-width: 800px) {
@@ -117,8 +128,17 @@
     </div>
 
     <div class="deck-box">
-      <img id="deckImage" src="" alt="" style="max-width:100%;">
-      <p>Deck box</p>
+      <a id="deckImageLink" href="">
+        <img id="deckImage" src="" alt="">
+      </a>
+
+      <p class="download-link">
+        <a id="cardsheetDownload" href="" download>
+          Download full card set (PNG)
+        </a>
+      </p>
+
+      <p>Click image to view full size</p>
     </div>
 
   </section>
@@ -127,7 +147,21 @@
 
   <section>
     <h3>Complete Card Set</h3>
-    <img src="images/zuihou-mini-cardsheet.png" alt="Zuihou Mini card overview" style="max-width:100%;">
+
+    <a id="cardsheetLink" href="">
+      <img
+        id="cardsheetImage"
+        src=""
+        alt=""
+        style="max-width:100%;"
+      >
+    </a>
+
+    <p class="download-link">
+      <a id="cardsheetDownloadBottom" href="" download>
+        Download full card set (PNG)
+      </a>
+    </p>
   </section>
 
 </main>
@@ -145,7 +179,8 @@ const decks = {
   verbs: {
     name: "Fundamental Verbs",
     blurb: "This module introduces high-frequency Mandarin verbs that form the backbone of beginner sentence construction.",
-    image: "images/box-verbs.png",
+    boxImage: "images/zuihou-mini/boxes/box-FV-3d.png",
+    cardsheet: "images/zuihou-mini/cardsheets/cardsheet-FV.png",
     suits: [
       { name: "Actions", desc: "Core physical and mental actions learners encounter early." },
       { name: "States", desc: "Verbs describing condition and existence." },
@@ -159,46 +194,54 @@ const decks = {
       ["吃", "chī", "to eat"],
       ["说", "shuō", "to speak"]
     ]
-  },
-
-  food: {
-    name: "Food & Drink",
-    blurb: "Food vocabulary provides immediate cultural relevance and supports early conversational practice.",
-    image: "images/box-food.png",
-    suits: [
-      { name: "Staples", desc: "Foundational food items." },
-      { name: "Drinks", desc: "Common beverages." },
-      { name: "Meals", desc: "Words related to eating occasions." },
-      { name: "Taste", desc: "Descriptive food adjectives." }
-    ],
-    vocab: [
-      ["饭", "fàn", "rice / meal"],
-      ["水", "shuǐ", "water"],
-      ["茶", "chá", "tea"],
-      ["吃", "chī", "to eat"]
-    ]
   }
+
+  /* ---- Add additional decks here following the same pattern ---- */
 };
 
-/* ---- RENDERING ---- */
+/* ---- ELEMENTS ---- */
 
 const selector = document.getElementById("deckSelector");
 const deckName = document.getElementById("deckName");
 const deckBlurb = document.getElementById("deckBlurb");
 const suitList = document.getElementById("suitList");
 const vocabTable = document.getElementById("vocabTable");
+
 const deckImage = document.getElementById("deckImage");
+const deckImageLink = document.getElementById("deckImageLink");
+
+const cardsheetImage = document.getElementById("cardsheetImage");
+const cardsheetLink = document.getElementById("cardsheetLink");
+
+const cardsheetDownload = document.getElementById("cardsheetDownload");
+const cardsheetDownloadBottom = document.getElementById("cardsheetDownloadBottom");
+
+/* ---- RENDER ---- */
 
 function loadDeck(key) {
   const deck = decks[key];
 
-  document.querySelectorAll(".deck-selector button").forEach(b => b.classList.remove("active"));
+  document.querySelectorAll(".deck-selector button")
+    .forEach(b => b.classList.remove("active"));
   document.getElementById(`btn-${key}`).classList.add("active");
 
   deckName.textContent = deck.name;
   deckBlurb.textContent = deck.blurb;
-  deckImage.src = deck.image;
 
+  /* Box image */
+  deckImage.src = deck.boxImage;
+  deckImage.alt = deck.name + " deck box";
+  deckImageLink.href = deck.boxImage;
+
+  /* Cardsheet */
+  cardsheetImage.src = deck.cardsheet;
+  cardsheetImage.alt = deck.name + " complete card set";
+  cardsheetLink.href = deck.cardsheet;
+
+  cardsheetDownload.href = deck.cardsheet;
+  cardsheetDownloadBottom.href = deck.cardsheet;
+
+  /* Suits */
   suitList.innerHTML = "";
   deck.suits.forEach(s => {
     const li = document.createElement("li");
@@ -206,6 +249,7 @@ function loadDeck(key) {
     suitList.appendChild(li);
   });
 
+  /* Vocabulary */
   vocabTable.innerHTML = "";
   deck.vocab.forEach(v => {
     const row = document.createElement("tr");
