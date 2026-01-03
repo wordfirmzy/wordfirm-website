@@ -12,8 +12,6 @@
   <link rel="stylesheet" href="style.css">
 
   <style>
-    /* ---- Mini-specific layout ---- */
-
     .deck-selector {
       display: flex;
       gap: 0.5rem;
@@ -55,17 +53,28 @@
       max-width: 100%;
     }
 
+    .purchase-link {
+      margin: 0.75rem 0;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .purchase-link a {
+      text-decoration: none;
+      border-bottom: 1px solid #333;
+    }
+
+    .download-link {
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+    }
+
     .suits {
       margin-top: 1rem;
     }
 
     .suits li {
       margin-bottom: 0.5rem;
-    }
-
-    .download-link {
-      margin-top: 0.5rem;
-      font-size: 0.85rem;
     }
 
     @media (max-width: 800px) {
@@ -108,8 +117,13 @@
 
     <div>
       <h3 id="deckName"></h3>
-
       <p id="deckBlurb"></p>
+
+      <p class="purchase-link">
+        <a id="purchaseLink" href="" target="_blank">
+          Purchase this deck
+        </a>
+      </p>
 
       <h4>Suits</h4>
       <ul class="suits" id="suitList"></ul>
@@ -132,6 +146,12 @@
         <img id="deckImage" src="" alt="">
       </a>
 
+      <p class="purchase-link">
+        <a id="purchaseLinkSide" href="" target="_blank">
+          Purchase this deck
+        </a>
+      </p>
+
       <p class="download-link">
         <a id="cardsheetDownload" href="" download>
           Download full card set (PNG)
@@ -149,13 +169,14 @@
     <h3>Complete Card Set</h3>
 
     <a id="cardsheetLink" href="">
-      <img
-        id="cardsheetImage"
-        src=""
-        alt=""
-        style="max-width:50%;"
-      >
+      <img id="cardsheetImage" src="" alt="" style="max-width:100%;">
     </a>
+
+    <p class="purchase-link">
+      <a id="purchaseLinkBottom" href="" target="_blank">
+        Purchase this deck
+      </a>
+    </p>
 
     <p class="download-link">
       <a id="cardsheetDownloadBottom" href="" download>
@@ -163,6 +184,11 @@
       </a>
     </p>
   </section>
+
+  <p style="font-size:0.85rem; color:#666;">
+    Purchasing for a school or district?
+    <a href="mailto:you@yourdomain.com">Contact us</a>
+  </p>
 
 </main>
 
@@ -173,30 +199,83 @@
 </footer>
 
 <script>
-/* ---- DATA MODEL ---- */
+/* ---- DATA ---- */
 
 const decks = {
-  verbs: {
-    name: "Fundamental Verbs",
-    blurb: "This module introduces high-frequency Mandarin verbs that form the backbone of beginner sentence construction.",
-    boxImage: "images/zuihou-mini/boxes/box-FV-3d.png",
-    cardsheet: "images/zuihou-mini/cardsheets/cardsheet-FV.png",
+  "colors-numbers": {
+    name: "Colors & Numbers",
+    blurb: "Builds fast recognition of essential colors and numbers used constantly in beginner instruction.",
+    boxImage: "images/zuihou-mini/boxes/box-colors-numbers-3d.png",
+    cardsheet: "images/zuihou-mini/cardsheets/cardsheet-colors-numbers.png",
+    purchase: "https://buy.stripe.com/REPLACE_COLORS",
     suits: [
-      { name: "Actions", desc: "Core physical and mental actions learners encounter early." },
-      { name: "States", desc: "Verbs describing condition and existence." },
-      { name: "Movement", desc: "Common verbs related to direction and motion." },
-      { name: "Daily Use", desc: "Verbs essential for classroom and daily communication." }
+      { name: "Colors", desc: "High-frequency descriptive color words." },
+      { name: "Numbers", desc: "Core counting and numeric recognition." },
+      { name: "Measures", desc: "Early quantity and amount expressions." },
+      { name: "Classroom Use", desc: "Immediate instructional applicability." }
     ],
-    vocab: [
-      ["去", "qù", "to go"],
-      ["来", "lái", "to come"],
-      ["看", "kàn", "to look"],
-      ["吃", "chī", "to eat"],
-      ["说", "shuō", "to speak"]
-    ]
-  }
+    vocab: [["一","yī","one"],["二","èr","two"]]
+  },
 
-  /* ---- Add additional decks here following the same pattern ---- */
+  "hobbies-activities": {
+    name: "Hobbies & Activities",
+    blurb: "Supports early conversation about interests and routines.",
+    boxImage: "images/zuihou-mini/boxes/box-hobbies-activities-3d.png",
+    cardsheet: "images/zuihou-mini/cardsheets/cardsheet-hobbies-activities.png",
+    purchase: "https://buy.stripe.com/REPLACE_HOBBIES",
+    suits: [
+      { name: "Sports", desc: "Common physical activities." },
+      { name: "Arts", desc: "Creative and performance activities." },
+      { name: "Games", desc: "Leisure and play vocabulary." },
+      { name: "Daily Activities", desc: "Routine actions." }
+    ],
+    vocab: [["玩","wán","to play"]]
+  },
+
+  "fundamental-verbs": {
+    name: "Fundamental Verbs",
+    blurb: "High-frequency verbs that anchor beginner sentence construction.",
+    boxImage: "images/zuihou-mini/boxes/box-fundamental-verbs-3d.png",
+    cardsheet: "images/zuihou-mini/cardsheets/cardsheet-fundamental-verbs.png",
+    purchase: "https://buy.stripe.com/REPLACE_VERBS",
+    suits: [
+      { name: "Actions", desc: "Core physical and mental actions." },
+      { name: "States", desc: "Conditions and existence." },
+      { name: "Movement", desc: "Direction and motion." },
+      { name: "Daily Use", desc: "Classroom essentials." }
+    ],
+    vocab: [["去","qù","to go"]]
+  },
+
+  "place-neighborhood": {
+    name: "Place & Neighborhood",
+    blurb: "Teaches vocabulary for locations and directions.",
+    boxImage: "images/zuihou-mini/boxes/box-place-neighborhood-3d.png",
+    cardsheet: "images/zuihou-mini/cardsheets/cardsheet-place-neighborhood.png",
+    purchase: "https://buy.stripe.com/REPLACE_PLACES",
+    suits: [
+      { name: "School", desc: "Daily school locations." },
+      { name: "Community", desc: "Neighborhood places." },
+      { name: "Home", desc: "Household locations." },
+      { name: "Directions", desc: "Location-based language." }
+    ],
+    vocab: [["学校","xuéxiào","school"]]
+  },
+
+  "common-objects-classroom": {
+    name: "Common Objects – Classroom",
+    blurb: "Covers high-frequency classroom objects for daily instruction.",
+    boxImage: "images/zuihou-mini/boxes/box-common-objects-classroom-3d.png",
+    cardsheet: "images/zuihou-mini/cardsheets/cardsheet-common-objects-classroom.png",
+    purchase: "https://buy.stripe.com/REPLACE_OBJECTS",
+    suits: [
+      { name: "Supplies", desc: "Everyday student tools." },
+      { name: "Furniture", desc: "Classroom fixtures." },
+      { name: "Paper & Work", desc: "Assignments and materials." },
+      { name: "Technology", desc: "Modern classroom items." }
+    ],
+    vocab: [["书","shū","book"]]
+  }
 };
 
 /* ---- ELEMENTS ---- */
@@ -216,6 +295,10 @@ const cardsheetLink = document.getElementById("cardsheetLink");
 const cardsheetDownload = document.getElementById("cardsheetDownload");
 const cardsheetDownloadBottom = document.getElementById("cardsheetDownloadBottom");
 
+const purchaseLink = document.getElementById("purchaseLink");
+const purchaseLinkSide = document.getElementById("purchaseLinkSide");
+const purchaseLinkBottom = document.getElementById("purchaseLinkBottom");
+
 /* ---- RENDER ---- */
 
 function loadDeck(key) {
@@ -228,12 +311,10 @@ function loadDeck(key) {
   deckName.textContent = deck.name;
   deckBlurb.textContent = deck.blurb;
 
-  /* Box image */
   deckImage.src = deck.boxImage;
   deckImage.alt = deck.name + " deck box";
   deckImageLink.href = deck.boxImage;
 
-  /* Cardsheet */
   cardsheetImage.src = deck.cardsheet;
   cardsheetImage.alt = deck.name + " complete card set";
   cardsheetLink.href = deck.cardsheet;
@@ -241,7 +322,10 @@ function loadDeck(key) {
   cardsheetDownload.href = deck.cardsheet;
   cardsheetDownloadBottom.href = deck.cardsheet;
 
-  /* Suits */
+  purchaseLink.href = deck.purchase;
+  purchaseLinkSide.href = deck.purchase;
+  purchaseLinkBottom.href = deck.purchase;
+
   suitList.innerHTML = "";
   deck.suits.forEach(s => {
     const li = document.createElement("li");
@@ -249,7 +333,6 @@ function loadDeck(key) {
     suitList.appendChild(li);
   });
 
-  /* Vocabulary */
   vocabTable.innerHTML = "";
   deck.vocab.forEach(v => {
     const row = document.createElement("tr");
@@ -266,6 +349,7 @@ Object.keys(decks).forEach((key, i) => {
   btn.id = `btn-${key}`;
   btn.onclick = () => loadDeck(key);
   selector.appendChild(btn);
+
   if (i === 0) loadDeck(key);
 });
 </script>
