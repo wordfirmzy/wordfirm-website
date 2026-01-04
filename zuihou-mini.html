@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Zuihou Mini — Beginner Mandarin Card Game</title>
+  <title>Zuihou Mini — Chinese Literacy Card Game</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 
   <style>
@@ -69,20 +69,14 @@
       font-size: 0.85rem;
     }
 
-    .suits {
-      margin-top: 1rem;
-    }
-
-    .suits li {
-      margin-bottom: 0.5rem;
-    }
-
     @media (max-width: 800px) {
       .deck-layout {
         grid-template-columns: 1fr;
       }
     }
-  </style>
+
+</style>
+
 </head>
 
 <body>
@@ -90,7 +84,7 @@
 <header>
   <div class="container">
     <h1>Zuihou</h1>
-    <p class="subtitle">Mandarin learning card games</p>
+    <p class="subtitle">Chinese literacy card games</p>
 
     <nav>
       <a href="index.html">Home</a>
@@ -106,7 +100,7 @@
 
   <section>
     <h2>Zuihou Mini</h2>
-    <p><em>Beginner Mandarin vocabulary modules</em></p>
+    <p><em>Beginner-Elementary Mandarin vocabulary modules</em></p>
 
     <div class="deck-selector" id="deckSelector"></div>
   </section>
@@ -126,10 +120,20 @@
       </p>
 
       <h4>Suits</h4>
-      <ul class="suits" id="suitList"></ul>
+	  <table class="linguistic-table">
+       <thead>
+        <tr>
+         <th>Hanzi</th>
+         <th>Pinyin</th>
+         <th>English</th>
+        </tr>
+       </thead>
+       <tbody id="suitTable"></tbody>
+      </table>
+
 
       <h4>Vocabulary</h4>
-      <table>
+      <table class="linguistic-table">
         <thead>
           <tr>
             <th>Hanzi</th>
@@ -169,7 +173,7 @@
     <h3>Complete Card Set</h3>
 
     <a id="cardsheetLink" href="">
-      <img id="cardsheetImage" src="" alt="" style="max-width:100%;">
+      <img id="cardsheetImage" src="" alt="" style="max-width:60%;">
     </a>
 
     <p class="purchase-link">
@@ -209,12 +213,17 @@ const decks = {
     cardsheet: "images/zuihou-mini/cardsheets/cardsheet-colors-numbers.png",
     purchase: "https://buy.stripe.com/REPLACE_COLORS",
     suits: [
-      { name: "Colors", desc: "High-frequency descriptive color words." },
-      { name: "Numbers", desc: "Core counting and numeric recognition." },
-      { name: "Measures", desc: "Early quantity and amount expressions." },
-      { name: "Classroom Use", desc: "Immediate instructional applicability." }
+      ["红","hóng","red"],["蓝","lán","blue"],
+	  ["黄","huáng","yellow"],["绿","lǜ","green"],
     ],
-    vocab: [["一","yī","one"],["二","èr","two"]]
+    vocab: [["一","yī","one"],["二","èr","two"],
+	["三","sān","three"],["四","sì","four"],
+	["五","wǔ","five"],["六","liù","six"],
+	["七","qī","seven"],["八","bā","eight"],
+	["九","jiǔ","nine"],["十","shí","ten"],
+	["百","bǎi","hundred"],["千","qiān","thousand"],
+	["万","wàn","ten thousand"]
+]
   },
 
   "hobbies-activities": {
@@ -224,12 +233,17 @@ const decks = {
     cardsheet: "images/zuihou-mini/cardsheets/cardsheet-hobbies-activities.png",
     purchase: "https://buy.stripe.com/REPLACE_HOBBIES",
     suits: [
-      { name: "Sports", desc: "Common physical activities." },
-      { name: "Arts", desc: "Creative and performance activities." },
-      { name: "Games", desc: "Leisure and play vocabulary." },
-      { name: "Daily Activities", desc: "Routine actions." }
+      ["打","dǎ","to hit, to play, to do"],["学","xué","to study"],
+	  ["做","zuò","to do, to make"],["玩","wán","to play"],
     ],
-    vocab: [["玩","wán","to play"]]
+    vocab: [["骑车","qí chē","ride a bike"],["踢足球","tī zúqiú","play football (soccer)"],
+	["上课","shàng kè","attend class"],["聊天","liáo tiān","to chat"],
+	["打篮球","dǎ lánqiú","play basketball"],["画画","huà huà","draw pictures"],
+	["上网","shàng wǎng","go on the internet"],["运动","yùndòng","do sports, exercise"],
+	["看手机","kàn shǒujī","look at your phone"],["游泳","yóuyǒng","to swim"],
+	["跑步","pǎo bù","to run"],["走路","zǒu lù","to walk"],
+	["唱歌","chàng gē","to sing songs"]
+]
   },
 
   "fundamental-verbs": {
@@ -239,12 +253,17 @@ const decks = {
     cardsheet: "images/zuihou-mini/cardsheets/cardsheet-fundamental-verbs.png",
     purchase: "https://buy.stripe.com/REPLACE_VERBS",
     suits: [
-      { name: "Actions", desc: "Core physical and mental actions." },
-      { name: "States", desc: "Conditions and existence." },
-      { name: "Movement", desc: "Direction and motion." },
-      { name: "Daily Use", desc: "Classroom essentials." }
+      ["上","shàng","top, start"],["下","xià","bottom, finish"],
+	  ["是","shì","to be"],["有","yǒu","to have, there is"]
     ],
-    vocab: [["去","qù","to go"]]
+    vocab: [["做","zuò","to do, to make"],["用","yòng","to use"],
+	["想","xiǎng","to want, to think"],["看","kàn","to see"],
+	["打","dǎ","to hit, to do"],["说","shuō","to speak"],
+	["买","mǎi","to buy"],["穿","chuān","to wear"],
+	["去","qù","to go"],["来","lái","to come"],
+	["给","gěi","to give"],["玩","wán","to play"],
+	["吃","chī","to eat"]
+]
   },
 
   "place-neighborhood": {
@@ -254,12 +273,17 @@ const decks = {
     cardsheet: "images/zuihou-mini/cardsheets/cardsheet-place-neighborhood.png",
     purchase: "https://buy.stripe.com/REPLACE_PLACES",
     suits: [
-      { name: "School", desc: "Daily school locations." },
-      { name: "Community", desc: "Neighborhood places." },
-      { name: "Home", desc: "Household locations." },
-      { name: "Directions", desc: "Location-based language." }
+      ["近","jìn","near"],["远","yuǎn","far"],
+	  ["边","biān","side (edge)"],["面","miàn","side (face)"],
     ],
-    vocab: [["学校","xuéxiào","school"]]
+    vocab: [["城市","chéng shì","none"],["超市","chāo shì","supermarket"],
+	["公园","gōng yuán","park"],["学校","xué xiào","school"],
+	["教堂","jiào táng","church"],["饭店","fàn diàn","restaurant"],
+	["医院","yī yuàn","hospital"],["银行","yín háng","bank"],
+	["商店","shāng diàn","shop"],["停车场","tíng chē chǎng","parking lot"],
+	["健身房","jiàn shēn fáng","gym"],["小区","xiǎo qū","neighborhood"],
+	["红路灯","hóng lù dēng","stoplight"]
+]
   },
 
   "common-objects-classroom": {
@@ -268,13 +292,17 @@ const decks = {
     boxImage: "images/zuihou-mini/boxes/box-common-objects-classroom-3d.png",
     cardsheet: "images/zuihou-mini/cardsheets/cardsheet-common-objects-classroom.png",
     purchase: "https://buy.stripe.com/REPLACE_OBJECTS",
-    suits: [
-      { name: "Supplies", desc: "Everyday student tools." },
-      { name: "Furniture", desc: "Classroom fixtures." },
-      { name: "Paper & Work", desc: "Assignments and materials." },
-      { name: "Technology", desc: "Modern classroom items." }
+    suits: [ ["带","dài","take, bring"],["找","zhǎo","search, look for"],
+	["放","fàng","to put, to place"],["拿","ná","take"]
     ],
-    vocab: [["书","shū","book"]]
+    vocab: [["纸","zhǐ","paper"],["书","shū","book"],
+	["书包","shūbāo","bookbag"],["铅笔","qiānbǐ","pencil"],
+	["桌子","zhuōzi","desk, table"],["椅子","yǐzi","chair"],
+	["白板","báibǎn","whiteboard"],["窗户","chuānghu","window"],
+	["笔记本","bǐjì běn","notebook"],["作业","zuòyè","homework"],
+	["考试","kǎoshì","exam"],["教室","jiàoshì","classroom"],
+	["剪刀","jiǎn dāo","scissors"]
+]
   }
 };
 
@@ -283,7 +311,7 @@ const decks = {
 const selector = document.getElementById("deckSelector");
 const deckName = document.getElementById("deckName");
 const deckBlurb = document.getElementById("deckBlurb");
-const suitList = document.getElementById("suitList");
+const suitTable = document.getElementById("suitTable");
 const vocabTable = document.getElementById("vocabTable");
 
 const deckImage = document.getElementById("deckImage");
@@ -326,17 +354,27 @@ function loadDeck(key) {
   purchaseLinkSide.href = deck.purchase;
   purchaseLinkBottom.href = deck.purchase;
 
-  suitList.innerHTML = "";
+  suitTable.innerHTML = "";
   deck.suits.forEach(s => {
-    const li = document.createElement("li");
-    li.innerHTML = `<strong>${s.name}:</strong> ${s.desc}`;
-    suitList.appendChild(li);
-  });
+   const row = document.createElement("tr");
+
+   // Support BOTH suit formats safely:
+   // 1) { name, desc }
+   // 2) ["汉字", "pinyin", "english"]
+   if (Array.isArray(s)) {
+     row.innerHTML = `<td class="hanzi">${s[0]}</td><td>${s[1]}</td><td>${s[2]}</td>`;
+   } else {
+     row.innerHTML = `<td>${s.name}</td><td>—</td><td>${s.desc}</td>`;
+   }
+
+   suitTable.appendChild(row);
+});
+
 
   vocabTable.innerHTML = "";
   deck.vocab.forEach(v => {
     const row = document.createElement("tr");
-    row.innerHTML = `<td>${v[0]}</td><td>${v[1]}</td><td>${v[2]}</td>`;
+    row.innerHTML = `<td class="hanzi">${v[0]}</td><td>${v[1]}</td><td>${v[2]}</td>`;
     vocabTable.appendChild(row);
   });
 }

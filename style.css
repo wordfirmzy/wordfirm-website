@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+
 /* Base */
 
 body {
@@ -82,6 +84,14 @@ th {
   font-family: "Source Sans 3", sans-serif;
 }
 
+/* Pinyin column — ONLY for linguistic tables */
+table.linguistic-table thead th:nth-child(2),
+table.linguistic-table tbody td:nth-child(2) {
+  font-family: "Gentium Plus", "Charis SIL", "Noto Serif", "Times New Roman", serif;
+}
+
+
+
 /* Lists */
 
 ul {
@@ -95,6 +105,17 @@ hr {
   border-top: 1px solid #ccc;
   margin: 2.5rem 0;
 }
+
+/* Hanzi: dedicated CJK serif font */
+.hanzi {
+  font-family:
+    "Noto Sans CJK SC",
+    "Source Han Sans SC",
+    "PingFang SC",
+    "Microsoft YaHei",
+    serif;
+}
+
 
 /* Footer */
 
